@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "img-vmware-patch"
+version = "0.1.0"
+description = "Generate a VMDK descriptor for a raw disk image and prepare a minimal VMware virtual machine around it."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "img-vmware-patch contributors" }]
+keywords = ["vmdk", "vmx", "vmware", "disk-image", "descriptor", "workstation"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: System :: Emulators",
+    "Topic :: Utilities",
+]
+
+[project.scripts]
+img-vmware-patch = "img_vmware_patch.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

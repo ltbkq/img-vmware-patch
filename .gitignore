@@ -1,0 +1,42 @@
+# Byte-compiled / optimised / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+build/
+dist/
+sdist/
+wheels/
+*.egg-info/
+*.egg
+.eggs/
+pip-wheel-metadata/
+
+# Virtual environments
+.env
+.venv/
+venv/
+ENV/
+
+# Test / coverage tooling
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.pytest_cache/
+.cache/
+.hypothesis/
+.mypy_cache/
+.ruff_cache/
+
+# Editors / OS
+.idea/
+.vscode/
+*.swp
+*~
+.DS_Store
+
+# Local scratch
+*.vmdk.local
