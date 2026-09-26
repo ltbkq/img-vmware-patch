@@ -1,5 +1,7 @@
 # img-vmware-patch
 
+> **English** | [简体中文](README.zh-CN.md)
+
 Generate a **VMDK descriptor** for a raw disk image (`.img`, `.bin`, `.raw`, …)
 and optionally prepare a minimal **VMware Workstation / Player / Fusion**
 virtual machine around it.

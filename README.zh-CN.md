@@ -1,5 +1,7 @@
 # img-vmware-patch
 
+> [English](README.md) | **简体中文**
+
 为原始磁盘镜像（`.img`、`.bin`、`.raw` …）生成 **VMDK descriptor**，并可选地在它周围
 创建一个最小可用的 **VMware Workstation / Player / Fusion** 虚拟机。
 
