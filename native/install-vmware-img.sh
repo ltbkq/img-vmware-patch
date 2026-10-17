@@ -71,8 +71,8 @@ while [ $# -gt 0 ]; do
         -h|--help)   usage; exit 0 ;;
         -V|--version) echo "$PROG $VERSION"; exit 0 ;;
         -*)          die "未知选项：$1（-h 看帮助）" ;;
-        *)           # 裸参数：selftest 的镜像路径
-                     if [ -z "$OPT_IMG" ] && [ -e "$1" ]; then OPT_IMG=$1
+        *)           # 裸参数：当作 selftest 的镜像路径（存在性在动作里再校验）
+                     if [ -z "$OPT_IMG" ]; then OPT_IMG=$1
                      else die "未知参数：$1（-h 看帮助）"; fi ;;
     esac
     shift
@@ -1041,15 +1041,16 @@ shim_marked() {   # 该二进制是否已挂上 libfbimgshim.so
 inject_one() {
     local t=$1
     [ -x "$t" ] || { warn "跳过（不存在）：$t"; return 0; }
-    if shim_marked "$t" && [ ! -f "$t.orig" ]; then
-        ok "已注入：${t##*/}（无 .orig 备份，视为已就绪）"; return 0
-    fi
     if [ ! -f "$t.orig" ]; then
         cp -a "$t" "$t.orig"
         ok "原始备份 -> $t.orig"
     fi
     if shim_marked "$t.orig"; then
-        ok "已注入：${t##*/}"; return 0
+        # 备份本身已带补丁（历史遗留）：无法回退出"干净"版本，保持现状
+        ok "已注入：${t##*/}（备份已含补丁，保留）"; return 0
+    fi
+    if shim_marked "$t"; then
+        ok "已注入：${t##*/}（无需重复处理）"; return 0
     fi
     # 不能就地写正在运行的二进制（ETXTBSY）：生成新文件再 rename 顶掉
     local new="$t.new.$$"
