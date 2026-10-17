@@ -10,6 +10,18 @@ No conversion, no wizard: the raw image stays exactly where it is and is
 referenced through a single `FLAT` extent, which makes the operation instant
 even for multi-terabyte images.
 
+## Two ways to run a raw image
+
+| | `link` / `create` (this tool) | [`native/`](native/README.md) |
+| --- | --- | --- |
+| Approach | writes a `.vmdk` **descriptor file** next to the image | patches VMware so it can open the bare `.img` directly |
+| On disk | one extra `.vmdk` you can name | hidden `.fbimg-desc` / `.fbimg-data` |
+| GUI file chooser | pick the `.vmdk` | pick the `.img` (GUI patch included) |
+| Modifies VMware | no | yes — one-shot, idempotent, fully reversible |
+| Best for | Windows/macOS hosts, shipping a `.vmdk`, zero-risk setups | booting the raw `.img` as-is on a Linux host |
+
+Both can coexist; they do not conflict.
+
 * Pure Python 3.9+, **standard library only**.
 * `link` and `info` never require VMware — they work on any machine.
 * `create` writes the `.vmx` first, then tries to add it to the Workstation

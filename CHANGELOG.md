@@ -5,6 +5,40 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+* **`native/` — boot raw `.img` images in VMware directly (Linux hosts).**
+  A disk-access layer (`fbimg-shim.c` → `libfbimgshim.so`) is injected as a
+  `DT_NEEDED` entry into `vmware-vmx`, `vmware-vmx-debug`, `vmware-vmx-stats`
+  and `appLoader`, so `open("disk.img")` is redirected to a hidden
+  `.fbimg-desc` descriptor generated on the fly next to the image. Reads and
+  writes still land at offset 0 of the `.img`; `rename`/`unlink`/`truncate` are
+  hooked so VMware's descriptor update path can never replace the payload.
+* `native/patch-vmware-ui-imgfilter.py` — adds `*.img` to the GUI "Virtual
+  Disks" file filter (rewrites the 4-byte `lea` displacement that loads the
+  second glob, plus the English/Chinese labels). Idempotent, `--status`,
+  `--revert`, `--root`.
+* `native/install-vmware-img.sh` — self-contained one-shot installer
+  (`install` / `uninstall` / `check` / `selftest`), sources embedded, prefix
+  auto-detection, `.orig` backups everywhere, safe against a running VMware.
+* `native/install-native.sh` / `native/uninstall-native.sh` — split install and
+  full revert, for repo development.
+* `native/check-sync.sh` — asserts the embedded copies in the one-shot script
+  match the standalone sources.
+* `native/README.md` / `native/README.zh-CN.md` — full write-up: background,
+  design, the GUI filter patch, verification evidence (VMware Workstation
+  26.0.1), the eight pitfalls hit during development, portability notes and an
+  FAQ.
+
+### Changed
+
+* VMware installation prefix is detected instead of hard-coded
+  (`/usr/lib/vmware` → `/usr/local/vmware` → `/opt/vmware`, then by resolving
+  the `vmware` command); the shim's process check matches any path containing
+  `/vmware/` rather than a fixed prefix.
+
 ## [0.1.0] - 2026-09-26
 
 ### Added

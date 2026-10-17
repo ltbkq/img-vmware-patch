@@ -8,6 +8,18 @@
 不做格式转换、不用向导：镜像文件本身保持原样，通过单条 `FLAT` extent 引用，因此即使
 是数 TB 的镜像也是秒级完成。
 
+## 两条路线
+
+| | `link` / `create`（本项目自带工具） | [`native/`](native/README.zh-CN.md) |
+| --- | --- | --- |
+| 做法 | 为镜像**生成一个 `.vmdk` 描述块文件** | 改造 VMware，让它**直接打开裸 `.img`** |
+| 目录里留什么 | 多一个可命名的 `.vmdk` | 隐藏文件 `.fbimg-desc` / `.fbimg-data` |
+| 图形界面选盘 | 选 `.vmdk` | 选 `.img`（附界面补丁） |
+| 是否改 VMware | 不需要 | 需要 —— 一次性、幂等、可完全还原 |
+| 适合 | Windows/macOS 宿主、要把 `.vmdk` 分发出去、零风险场景 | Linux 宿主上**直接开机裸 `.img`** |
+
+两者互补，可同时使用。
+
 * 纯 Python 3.9+，**仅使用标准库**。
 * `link` 与 `info` 完全不依赖 VMware，任何机器都能运行。
 * `create` 先写 `.vmx`，再在检测到 `vmrun` 时尝试把虚拟机加入 Workstation 库
